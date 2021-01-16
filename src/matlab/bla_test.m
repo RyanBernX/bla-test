@@ -16,6 +16,7 @@ for i = 1:50
 end
 toc;
 
+tic;
 for i = 1:50
     c = A' * b;
 end
@@ -28,6 +29,7 @@ for i = 1:5
 end
 toc;
 
+tic;
 for i = 1:5
     C = A' * B;
 end
