@@ -18,21 +18,29 @@ int main(int argc, char **argv){
     Mat A = Mat::Random(n, n);
     Mat B = Mat::Random(n, n);
     Vec b = Mat::Random(n, 1);
-    Mat C;
-    Vec c;
+    Mat C = Mat::Zero(n, n);
+    Vec c = Mat::Zero(n, 1);
 
     // gemv
     std::cout << "Testing gemv A * b (50 times): ";
     auto t = tic();
     for (int i = 0; i < 50; ++i){
+#ifdef USE_BLAS_DIRECT
+        cblas_dgemv(CblasColMajor, CblasNoTrans, n, n, 1.0, A.data(), n, b.data(), 1, 0.0, c.data(), 1);
+#else
         c = A * b;
+#endif
     }
     std::cout << toc(t) << " sec." << std::endl;
 
     std::cout << "Testing gemv A' * b (50 times): ";
     t = tic();
     for (int i = 0; i < 50; ++i){
+#ifdef USE_BLAS_DIRECT
+        cblas_dgemv(CblasColMajor, CblasTrans, n, n, 1.0, A.data(), n, b.data(), 1, 0.0, c.data(), 1);
+#else
         c = A.transpose() * b;
+#endif
     }
     std::cout << toc(t) << " sec." << std::endl;
 
@@ -40,14 +48,24 @@ int main(int argc, char **argv){
     std::cout << "Testing gemm A * B (5 times): ";
     t = tic();
     for (int i = 0; i < 5; ++i){
-        C = A * B;
+#ifdef USE_BLAS_DIRECT
+        cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, n, n, n, 1.0, \
+                A.data(), n, B.data(), n, 0.0, C.data(), n);
+#else
+        C.noalias() = A * B;
+#endif
     }
     std::cout << toc(t) << " sec." << std::endl;
 
     std::cout << "Testing gemm A' * B (5 times): ";
     t = tic();
     for (int i = 0; i < 5; ++i){
-        C = A.transpose() * B;
+#ifdef USE_BLAS_DIRECT
+        cblas_dgemm(CblasColMajor, CblasTrans, CblasNoTrans, n, n, n, 1.0, \
+                A.data(), n, B.data(), n, 0.0, C.data(), n);
+#else
+        C.noalias() = A.transpose() * B;
+#endif
     }
     std::cout << toc(t) << " sec." << std::endl;
 

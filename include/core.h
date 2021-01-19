@@ -2,10 +2,12 @@
 #define CORE_H
 
 #ifdef USE_MKL
+#include <mkl.h>
 #define EIGEN_USE_MKL_ALL
 #endif
 
 #ifdef USE_BLAS_LAPACKE
+#include <cblas.h>
 #define EIGEN_USE_BLAS
 #define EIGEN_USE_LAPACKE
 #endif
