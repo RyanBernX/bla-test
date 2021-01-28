@@ -12,15 +12,23 @@
 #define EIGEN_USE_LAPACKE
 #endif
 
+#include <complex>
 #include <Eigen/Eigen>
 
 namespace bla_test {
     using Scalar = double;
+    using ComplexScalar = std::complex<Scalar>;
     using Index = ptrdiff_t;
+    using SparseIndex = int;
 
     using Eigen::Dynamic;
+    using Eigen::ColMajor;
+    using Eigen::RowMajor;
+    using Eigen::Map;
     using Mat = Eigen::Matrix<Scalar, Dynamic, Dynamic>;
+    using RMat = Eigen::Matrix<Scalar, Dynamic, Dynamic, RowMajor>;
     using Vec = Eigen::Matrix<Scalar, Dynamic, 1>;
+    using SpMat = Eigen::SparseMatrix<Scalar, ColMajor, SparseIndex>;
 }
 
 #endif

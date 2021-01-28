@@ -1,3 +1,6 @@
 *.o
 *.sw[op]
 src/bla_*
+src/spbla_*
+src/readmat
+data/
